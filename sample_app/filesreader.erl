@@ -7,12 +7,14 @@
 
 read_file(Filename) ->
     Content = element(2, file:read_file(?PROCESS_DIR ++ Filename)),
-    {consolidator, consolidator@juanma} ! {consolidate, Content, length(Content)}.
+    io:format("Process ~w sending message\n", [self()]),
+    {consolidator, consolidator@juanma} ! {consolidate, Content, 10},
+    file:delete(?PROCESS_DIR ++ Filename).
 
 deliver_files() ->
-    timer:sleep(1000),
     Files = filelib:wildcard(?INPUT_DIR ++ "*"),
     if length(Files) == 0 -> 
+        timer:sleep(1000),
         deliver_files();
     true ->
         Filenames = lists:map(fun(F) -> lists:last(string:tokens(F, "/")) end, Files),
