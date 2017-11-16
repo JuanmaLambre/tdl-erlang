@@ -8,7 +8,7 @@
 read_file(Filename) ->
     Content = element(2, file:read_file(?PROCESS_DIR ++ Filename)),
     io:format("Process ~w sending message\n", [self()]),
-    {consolidator, consolidator@juanma} ! {consolidate, Content, 10},
+    {consolidator, consolidator@ARAR17395} ! {consolidate, Content, 10},
     file:delete(?PROCESS_DIR ++ Filename).
 
 deliver_files() ->
